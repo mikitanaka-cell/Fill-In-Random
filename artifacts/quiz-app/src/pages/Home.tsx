@@ -157,17 +157,16 @@ export default function Home() {
                   className="group bg-card hover:bg-slate-50/50 p-4 md:p-5 rounded-2xl border border-border shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200"
                 >
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <h3 className="font-bold text-foreground truncate">{q.title}</h3>
+                    <div className="flex items-center gap-2">
                       {q.hasWrongAttempt && (
                         <span className="px-2 py-0.5 rounded-md bg-destructive/10 text-destructive text-xs font-bold shrink-0">
                           復習推奨
                         </span>
                       )}
+                      <p className="font-medium text-foreground truncate">
+                        {q.text.replace(/\{\{([^}]*)\}\}/g, '___')}
+                      </p>
                     </div>
-                    <p className="text-muted-foreground text-sm truncate opacity-80">
-                      {q.text.replace(/\{\{answer\}\}/g, ' [___] ')}
-                    </p>
                   </div>
                   
                   <div className="flex items-center gap-6 shrink-0">
@@ -200,7 +199,7 @@ export default function Home() {
                           
                           <ConfirmDialog 
                             title="学習記録をリセットしますか？"
-                            description={`「${q.title}」の正解数などの記録がゼロになります。この操作は取り消せません。`}
+                            description="この問題の正解数などの記録がゼロになります。この操作は取り消せません。"
                             onConfirm={() => resetMutation.mutate({ id: q.id })}
                             confirmText="リセット"
                             trigger={
@@ -214,7 +213,7 @@ export default function Home() {
                           
                           <ConfirmDialog 
                             title="本当に削除しますか？"
-                            description={`「${q.title}」を削除します。この操作は取り消せません。`}
+                            description="この問題を削除します。この操作は取り消せません。"
                             onConfirm={() => deleteMutation.mutate({ id: q.id })}
                             confirmText="削除する"
                             variant="destructive"

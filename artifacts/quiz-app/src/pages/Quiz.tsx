@@ -132,7 +132,7 @@ export default function Quiz() {
           </div>
           <h2 className="text-2xl font-display font-bold mb-4">対象の問題がありません</h2>
           <p className="text-muted-foreground mb-8">
-            {isWrongOnly ? "素晴らしい！復習が必要な問題は現在ありません。" : "問題が登録されていません。"}
+            {isWrongOnly ? "正答率80%未満の問題は現在ありません。" : "問題が登録されていません。"}
           </p>
           <button 
             onClick={() => setLocation('/')}

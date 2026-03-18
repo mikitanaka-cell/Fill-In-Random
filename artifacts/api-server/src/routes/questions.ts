@@ -36,7 +36,10 @@ router.get("/questions", async (req, res) => {
 
   let questions = await db.select().from(questionsTable).orderBy(questionsTable.createdAt);
   if (wrongOnly) {
-    questions = questions.filter((q) => q.hasWrongAttempt);
+    questions = questions.filter((q) => {
+      if (q.totalAttempts === 0) return false;
+      return q.correctAttempts / q.totalAttempts < 0.8;
+    });
   }
 
   res.json(questions.map(questionToResponse));

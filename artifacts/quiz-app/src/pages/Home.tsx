@@ -46,7 +46,9 @@ export default function Home() {
   });
 
   const hasQuestions = questions && questions.length > 0;
-  const hasWrongQuestions = questions && questions.some(q => q.hasWrongAttempt);
+  const hasLowAccuracyQuestions = questions && questions.some(
+    q => q.totalAttempts > 0 && q.correctAttempts / q.totalAttempts < 0.8
+  );
 
   return (
     <Layout>
@@ -73,11 +75,11 @@ export default function Home() {
             </button>
             <button 
               onClick={() => setLocation('/quiz?mode=wrong')}
-              disabled={!hasWrongQuestions}
+              disabled={!hasLowAccuracyQuestions}
               className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all font-medium disabled:opacity-50 disabled:pointer-events-none"
             >
               <Target className="w-4 h-4" />
-              間違えた問題のみ
+              正答率80%未満
             </button>
           </div>
         </section>
@@ -118,8 +120,12 @@ export default function Home() {
               <XCircle className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground font-medium">復習が必要な問題</p>
-              <p className="text-2xl font-bold font-display">{stats?.questionsWithWrongAttempts || 0} 問</p>
+              <p className="text-sm text-muted-foreground font-medium">正答率80%未満</p>
+              <p className="text-2xl font-bold font-display">
+                {questions
+                  ? questions.filter(q => q.totalAttempts > 0 && q.correctAttempts / q.totalAttempts < 0.8).length
+                  : 0} 問
+              </p>
             </div>
           </motion.div>
         </section>
@@ -158,9 +164,9 @@ export default function Home() {
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      {q.hasWrongAttempt && (
+                      {q.totalAttempts > 0 && q.correctAttempts / q.totalAttempts < 0.8 && (
                         <span className="px-2 py-0.5 rounded-md bg-destructive/10 text-destructive text-xs font-bold shrink-0">
-                          復習推奨
+                          80%未満
                         </span>
                       )}
                       <p className="font-medium text-foreground truncate">

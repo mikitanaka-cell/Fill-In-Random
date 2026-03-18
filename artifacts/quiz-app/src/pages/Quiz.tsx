@@ -58,7 +58,7 @@ export default function Quiz() {
     if (!currentQ || submitMutation.isPending) return;
     
     // Fill empty strings for unanswered blanks just in case
-    const blankCount = (currentQ.text.match(/\{\{answer\}\}/g) || []).length;
+    const blankCount = (currentQ.text.match(/\{\{[^}]+\}\}/g) || []).length;
     const paddedAnswers = Array(blankCount).fill("").map((_, i) => currentAnswers[i] || "");
 
     submitMutation.mutate(
@@ -191,7 +191,7 @@ export default function Quiz() {
   }
 
   // Active Question Render
-  const isAnsweredAll = currentAnswers.filter(a => a.trim() !== "").length === (currentQ.text.match(/\{\{answer\}\}/g) || []).length;
+  const isAnsweredAll = currentAnswers.filter(a => a.trim() !== "").length === (currentQ.text.match(/\{\{[^}]+\}\}/g) || []).length;
 
   return (
     <Layout>

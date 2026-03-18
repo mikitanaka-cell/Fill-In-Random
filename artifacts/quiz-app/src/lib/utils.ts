@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Helper to split a question string by {{answer}} into segments
+// Helper to split a question string by {{anything}} placeholders into segments
 export function parseQuestionText(text: string) {
-  const segments = text.split(/\{\{answer\}\}/g);
+  const segments = text.split(/\{\{[^}]+\}\}/g);
   return segments;
 }

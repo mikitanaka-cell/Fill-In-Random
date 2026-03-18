@@ -1,15 +1,18 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API specification for Fill-in-the-blank Quiz System
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: questions
+    description: Question management
+  - name: attempts
+    description: Quiz attempt tracking
 paths:
   /healthz:
     get:
@@ -24,6 +27,188 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /questions:
+    get:
+      operationId: listQuestions
+      tags: [questions]
+      summary: List all questions
+      parameters:
+        - name: wrongOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: If true, return only questions that have been answered incorrectly at least once
+      responses:
+        "200":
+          description: List of questions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Question"
+    post:
+      operationId: createQuestion
+      tags: [questions]
+      summary: Create a new question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateQuestionBody"
+      responses:
+        "201":
+          description: Created question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+
+  /questions/{id}:
+    get:
+      operationId: getQuestion
+      tags: [questions]
+      summary: Get a single question
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateQuestion
+      tags: [questions]
+      summary: Update a question
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateQuestionBody"
+      responses:
+        "200":
+          description: Updated question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteQuestion
+      tags: [questions]
+      summary: Delete a question
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /questions/{id}/attempts:
+    post:
+      operationId: submitAttempt
+      tags: [attempts]
+      summary: Submit an attempt for a question
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitAttemptBody"
+      responses:
+        "200":
+          description: Attempt result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttemptResult"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /questions/{id}/reset:
+    post:
+      operationId: resetQuestionStats
+      tags: [attempts]
+      summary: Reset attempt stats for a question
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Reset successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [attempts]
+      summary: Get overall quiz statistics
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +219,108 @@ components:
       required:
         - status
 
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          description: Optional label for the question
+        text:
+          type: string
+          description: The full question text with {{answer}} placeholders marking blank spots
+        answers:
+          type: array
+          items:
+            type: string
+          description: The correct answers in order of appearance
+        totalAttempts:
+          type: integer
+        correctAttempts:
+          type: integer
+        hasWrongAttempt:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - text
+        - answers
+        - totalAttempts
+        - correctAttempts
+        - hasWrongAttempt
+        - createdAt
+
+    CreateQuestionBody:
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+          description: Question text with {{answer}} placeholders
+      required:
+        - title
+        - text
+
+    SubmitAttemptBody:
+      type: object
+      properties:
+        answers:
+          type: array
+          items:
+            type: string
+          description: User's answers in order
+      required:
+        - answers
+
+    AttemptResult:
+      type: object
+      properties:
+        correct:
+          type: boolean
+        correctAnswers:
+          type: array
+          items:
+            type: string
+        userAnswers:
+          type: array
+          items:
+            type: string
+        perAnswerCorrect:
+          type: array
+          items:
+            type: boolean
+      required:
+        - correct
+        - correctAnswers
+        - userAnswers
+        - perAnswerCorrect
+
+    QuizStats:
+      type: object
+      properties:
+        totalQuestions:
+          type: integer
+        questionsWithWrongAttempts:
+          type: integer
+        totalAttempts:
+          type: integer
+        correctAttempts:
+          type: integer
+      required:
+        - totalQuestions
+        - questionsWithWrongAttempts
+        - totalAttempts
+        - correctAttempts
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+
+  --font-sans: 'Noto Sans JP', sans-serif;
+  --font-display: 'Kiwi Maru', serif;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+:root {
+  /* Clean Minimal Japanese Study App Palette */
+  /* Background: Soft Washi Paper (Off-white) */
+  --background: 45 29% 97%;
+  /* Foreground: Deep Ink (Dark charcoal/indigo) */
+  --foreground: 220 39% 11%;
+  
+  /* Borders: Soft stone */
+  --border: 40 15% 85%;
+  --input: 40 15% 85%;
+  --ring: 215 45% 45%;
+
+  /* Cards: Pure white with subtle warmth */
+  --card: 0 0% 100%;
+  --card-foreground: 220 39% 11%;
+
+  /* Primary: Ai-iro (Traditional Japanese Indigo) */
+  --primary: 215 45% 45%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary: Soft neutral for subtle buttons */
+  --secondary: 40 15% 92%;
+  --secondary-foreground: 220 39% 25%;
+
+  /* Muted: For secondary text and empty states */
+  --muted: 40 15% 92%;
+  --muted-foreground: 215 15% 45%;
+
+  /* Accent: Sakura/Vermillion inspired very soft */
+  --accent: 350 40% 90%;
+  --accent-foreground: 350 60% 40%;
+
+  /* Destructive: Akabeni (Soft traditional red) */
+  --destructive: 350 65% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Success: Matcha/Bamboo Green */
+  --success: 145 45% 45%;
+  --success-foreground: 0 0% 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    /* Subtle paper texture using SVG grain */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Custom blank input style for the quiz */
+  .blank-input {
+    @apply inline-block min-w-[80px] w-auto max-w-[200px] border-b-2 border-border bg-transparent px-2 py-1 text-center font-bold text-primary transition-all duration-200 outline-none focus:border-primary focus:ring-0 focus:bg-primary/5 mx-1;
+  }
+  
+  .blank-input-correct {
+    @apply border-success text-success bg-success/5 pointer-events-none;
+  }
+  
+  .blank-input-wrong {
+    @apply border-destructive text-destructive bg-destructive/5 pointer-events-none line-through decoration-destructive/50;
+  }
+
+  /* Hide scrollbar for clean horizontal scrolls */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}

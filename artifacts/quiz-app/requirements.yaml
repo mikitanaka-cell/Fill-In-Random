@@ -1,0 +1,17 @@
+packages:
+  "framer-motion": "For fluid page transitions, list animations, and satisfying micro-interactions suitable for a premium app."
+  "react-hook-form": "For robust form state management in the question creation/editing process."
+  "@hookform/resolvers": "To integrate Zod validation with react-hook-form."
+  "zod": "For schema validation of form inputs."
+  "canvas-confetti": "To provide a delightful celebration effect upon completing a quiz session perfectly."
+  "@types/canvas-confetti": "Types for canvas-confetti."
+
+images:
+  - path: "artifacts/quiz-app/public/images/study-bg.png"
+    description: "Abstract, very minimal Japanese Zen garden inspired vector illustration, extremely soft colors, mostly off-white and pale indigo, soft organic shapes, plenty of negative space"
+    aspect_ratio: "16:9"
+
+notes:
+  - "The app relies on @workspace/api-client-react for all API interactions."
+  - "The backend handles the /api/questions/{id}/attempts logic, we just send the answers array."
+  - "Using a clean, minimal Japanese stationery aesthetic: off-whites, deep indigos, soft greens/reds for feedback, and rounded serif typography."

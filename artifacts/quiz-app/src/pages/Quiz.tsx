@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useSearch } from "wouter";
-import { useListQuestions, useSubmitAttempt, getListQuestionsQueryKey, getGetStatsQueryKey } from "@workspace/api-client-react";
+import { useListQuestions, useSubmitAttempt } from "@/hooks/useLocalStorageQuiz";
 import { Layout } from "@/components/Layout";
 import { BlankRenderer } from "@/components/BlankRenderer";
 import { motion, AnimatePresence } from "framer-motion";

@@ -15,9 +15,10 @@ export default function Quiz() {
   const queryClient = useQueryClient();
   const isWrongOnly = search.includes("mode=wrong");
 
+  const listParams = { wrongOnly: isWrongOnly ? true : undefined };
   const { data: questions, isLoading } = useListQuestions(
-    { wrongOnly: isWrongOnly ? true : undefined },
-    { query: { refetchOnWindowFocus: false } }
+    listParams,
+    { query: { queryKey: getListQuestionsQueryKey(listParams), refetchOnWindowFocus: false } }
   );
 
   const submitMutation = useSubmitAttempt({

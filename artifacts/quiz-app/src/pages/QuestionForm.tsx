@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useCreateQuestion, useGetQuestion, useUpdateQuestion, getListQuestionsQueryKey } from "@workspace/api-client-react";
+import { useCreateQuestion, useGetQuestion, useUpdateQuestion, getListQuestionsQueryKey, getGetQuestionQueryKey } from "@workspace/api-client-react";
 import { Link, useLocation, useParams } from "wouter";
 import { Layout } from "@/components/Layout";
 import { BlankRenderer } from "@/components/BlankRenderer";
@@ -44,7 +44,7 @@ export default function QuestionForm() {
   const queryClient = useQueryClient();
 
   const { data: existingQuestion, isLoading: isFetching } = useGetQuestion(numericId, {
-    query: { enabled: isEditing },
+    query: { queryKey: getGetQuestionQueryKey(numericId), enabled: isEditing },
   });
 
   const [questionText, setQuestionText] = useState("");

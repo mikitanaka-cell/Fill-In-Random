@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useCreateQuestion, useGetQuestion, useUpdateQuestion, getListQuestionsQueryKey, getGetQuestionQueryKey } from "@workspace/api-client-react";
+import { useCreateQuestion } from "@/hooks/useLocalStorageQuiz";
 import { Link, useLocation, useParams } from "wouter";
 import { Layout } from "@/components/Layout";
 import { BlankRenderer } from "@/components/BlankRenderer";

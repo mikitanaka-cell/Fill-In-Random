@@ -1,4 +1,4 @@
-import { useListQuestions, useGetStats, useDeleteQuestion, useResetQuestionStats } from "@workspace/api-client-react";
+import { useListQuestions, useGetStats, useDeleteQuestion, useResetQuestionStats } from "@/hooks/useLocalStorageQuiz";
 import { Link, useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { motion } from "framer-motion";

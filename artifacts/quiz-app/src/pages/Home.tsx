@@ -46,9 +46,9 @@ export default function Home() {
   });
 
   const hasQuestions = questions && questions.length > 0;
-  const hasLowAccuracyQuestions = questions && questions.some(
-    q => q.totalAttempts > 0 && q.correctAttempts / q.totalAttempts < 0.8
-  );
+  const hasLowAccuracyQuestions = Array.isArray(questions) && questions.some(
+  q => q.totalAttempts > 0 && q.correctAttempts / q.totalAttempts < 0.8
+);
 
   return (
     <Layout>

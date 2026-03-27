@@ -122,9 +122,9 @@ export default function Home() {
             <div>
               <p className="text-sm text-muted-foreground font-medium">正答率80%未満</p>
               <p className="text-2xl font-bold font-display">
-                {questions
-                  ? questions.filter(q => q.totalAttempts > 0 && q.correctAttempts / q.totalAttempts < 0.8).length
-                  : 0} 問
+               {Array.isArray(questions)
+  ? questions.filter(q => q.totalAttempts > 0 && q.correctAttempts / q.totalAttempts < 0.8).length
+  : 0} 問
               </p>
             </div>
           </motion.div>
